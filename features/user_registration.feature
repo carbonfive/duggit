@@ -5,6 +5,8 @@ Feature: User registration
 
   Scenario: Register an account
     When I go to the registration page
-    And I fill in "username" with "mwynholds"
-    And I fill in "password" with "password"
-    Then I should see "welcome mwynholds"
+      And I fill in "Username" with "mwynholds"
+      And I fill in "Password" with "password"
+      And I press "Register"
+    Then I should be on the home page 
+      And I should see "Welcome mwynholds"
