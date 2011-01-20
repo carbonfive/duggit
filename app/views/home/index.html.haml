@@ -1,4 +1,5 @@
-- if current_user
+- if logged_in?
   %h2 Welcome #{current_user.username}
+  = link_to "Logout", user_session_path, :method => :delete
 - else
   %h2 Can you duggit?
