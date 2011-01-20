@@ -2,5 +2,6 @@ Duggit::Application.routes.draw do
 
   root :to => 'home#index'
 
-  resource :users
+  resources :users
+  resource :user_session
 end
