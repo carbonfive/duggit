@@ -1,1 +1,4 @@
-%h2 Welcome mwynholds
+- if current_user
+  %h2 Welcome #{current_user.username}
+- else
+  %h2 Can you duggit?
