@@ -16,7 +16,7 @@ describe UsersController do
       before do
         @count = User.count
         post :create,
-             :user => { :username => 'iceman', :password => 'dangerous' }
+             :user => { :username => 'iceman', :password => 'dangerous', :password_confirmation => 'dangerous' }
         @user = assigns(:user)
       end
 
