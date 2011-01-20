@@ -13,14 +13,14 @@ Feature: User authentication
       And I press "Login"
      Then I should be on the home page
       And I should see "Logout"
+      And I should not see "Login"
 
-  @wip
   Scenario: Log out
     Given the following user exists:
       | username  | password | password_confirmation |
       | mwynholds | password | password              |
     When I am logged in as "mwynholds"
-     And I press "Logout"
+     And I follow "Logout"
     Then I should be on the home page
      And I should not see "Logout"
      And I should see "Login"

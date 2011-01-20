@@ -25,4 +25,20 @@ describe UserSessionsController do
       response.should redirect_to(root_path)
     end
   end
+
+  describe '#destroy' do
+    before do
+      user = Factory :user
+      session[:user_credentials_id] = user.id
+      delete :destroy
+    end
+
+    it 'deletes the current user session' do
+      session[:user_credentials_id].should_not be
+    end
+
+    it 'redirects to the home page' do
+      response.should redirect_to(root_path)
+    end
+  end
 end
