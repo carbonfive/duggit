@@ -1,19 +1,18 @@
-%h2 User Registration
+#register
+  %h2 Register
 
-= form_for @user do |f|
-  = f.label :username
-  = f.text_field :username
+  = form_for @user do |f|
+    %fieldset
+      = f.label :username
+      = f.text_field :username
 
-  %br
+    %fieldset
+      = f.label :password
+      = f.password_field :password
 
-  = f.label :password
-  = f.password_field :password
+    %fieldset
+      = f.label :password_confirmation, 'Confirm'
+      = f.password_field :password_confirmation
 
-  %br
-
-  = f.label :password_confirmation
-  = f.password_field :password_confirmation
-
-  %br
-
-  = f.submit "Register"
+    %fieldset
+      = f.submit "Register"

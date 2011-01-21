@@ -1,30 +1,62 @@
 #container {
   font: 16pt Arial; }
 
+#body {
+  padding: 10px; }
+  #body .submit-link {
+    font-size: 14pt; }
+
 #header {
   padding: 10px;
   background-color: #ffdf80;
-  border-bottom: 1px solid gray;
-  min-height: 30px; }
-  #header a {
-    margin: 0 10px 0 10px; }
+  border-bottom: 1px solid gray; }
   #header .left {
     float: left; }
+    #header .left a {
+      margin-right: 10px; }
   #header .right {
     float: right; }
+    #header .right a {
+      margin-left: 10px; }
 
 #login {
   padding: 10px;
   margin: 150px auto 0 auto;
   width: 400px;
-  height: 200px;
   border: 1px solid gray;
-  background-color: #ffdf80; }
-  #login label {
-    margin-left: 30px; }
-  #login input {
-    margin-left: 30px;
-    margin-bottom: 20px; }
+  background-color: #ffdf80;
+  height: 180px; }
   #login h2 {
     text-align: center;
-    margin: 10px 0; }
+    margin: 10px 0 20px 0; }
+  #login fieldset {
+    margin-bottom: 20px; }
+  #login label {
+    float: left;
+    margin-left: 20px; }
+  #login input {
+    float: right;
+    margin-right: 20px; }
+
+#register {
+  padding: 10px;
+  margin: 150px auto 0 auto;
+  width: 400px;
+  border: 1px solid gray;
+  background-color: #ffdf80;
+  height: 230px; }
+  #register h2 {
+    text-align: center;
+    margin: 10px 0 20px 0; }
+  #register fieldset {
+    margin-bottom: 20px; }
+  #register label {
+    float: left;
+    margin-left: 20px; }
+  #register input {
+    float: right;
+    margin-right: 20px; }
+
+.clearfix {
+  clear: both;
+  float: none; }
