@@ -1,51 +1,61 @@
 $light-background: #FFDF80;
+$font-size: 16pt;
 
 @mixin left  { float: left; }
 @mixin right { float: right; }
 @mixin clear { clear: both; }
 
-@mixin dialog-form-field {
-  margin-left: 30px;
+@mixin title {
+  text-align: center;
+  margin: 10px 0 20px 0;
 }
 
 @mixin dialog {
   padding: 10px;
   margin: 150px auto 0 auto;
   width: 400px;
-  height: 200px;
   border: 1px solid gray;
   background-color: $light-background;
+  h2 { @include title }
+
+  fieldset {
+    margin-bottom: 20px;
+  }
 
   label {
-    @include dialog-form-field;
+    float: left;
+    margin-left: 20px;
   }
 
   input {
-    @include dialog-form-field;
-    margin-bottom: 20px;
+    float: right;
+    margin-right: 20px;
   }
 }
 
-@mixin title {
-  text-align: center;
-  margin: 10px 0;
-}
-
 #container {
-  font: 16pt Arial;
+  font: $font-size Arial;
 }
 
 #body {
+  padding: 10px;
+  .submit-link {
+    font-size: $font-size - 2;
+  }
 }
 
 #header {
   padding: 10px;
   background-color: $light-background;
   border-bottom: 1px solid gray;
-  min-height: 30px;
-  a { margin: 0 10px 0 10px; }
-  .left { @include left; }
-  .right { @include right; }
+  .left {
+    @include left;
+    a { margin-right: 10px; }
+  }
+  .right {
+    @include right;
+    a { margin-left: 10px; }
+  }
 }
 
 #footer {
@@ -53,6 +63,12 @@ $light-background: #FFDF80;
 
 #login {
   @include dialog;
-
-  h2 { @include title }
+  height: 180px;
 }
+
+#register {
+  @include dialog;
+  height: 230px;
+}
+
+.clearfix { clear: both; float: none; }
