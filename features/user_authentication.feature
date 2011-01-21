@@ -19,7 +19,7 @@ Feature: User authentication
     Given the following user exists:
       | username  | password | password_confirmation |
       | mwynholds | password | password              |
-    When I am logged in as "mwynholds"
+    When I am logged in as "mwynholds" with password "password"
      And I follow "Logout"
     Then I should be on the home page
      And I should not see "Logout"
