@@ -24,3 +24,4 @@ Feature: User authentication
     Then I should be on the home page
      And I should not see "Logout"
      And I should see "Login"
+     And I should see "Register"
