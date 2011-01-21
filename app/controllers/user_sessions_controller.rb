@@ -11,6 +11,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
+    current_user_session && current_user_session.destroy
     reset_session
     redirect_to root_path
   end
