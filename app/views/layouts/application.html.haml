@@ -23,6 +23,8 @@
         .clearfix
       #body
         .flash
+          - if flash[:error]
+            .error #{flash[:error]}
           - if flash[:message]
             .message #{flash[:message]}
         = yield

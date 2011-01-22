@@ -4,10 +4,7 @@ Feature: Link Posting
   I can post a url and a title
 
   Scenario: Post a link
-    Given the following users exist:
-      | username  | password | password_confirmation |
-      | mwynholds | password | password              |
-    When I am logged in as "mwynholds" with password "password"
+    When I am logged in as "mwynholds"
      And I am on the home page
      And I follow "Submit a Link"
      And I fill in "Title" with "title"

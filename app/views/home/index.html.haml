@@ -1,7 +1,10 @@
 = link_to "Submit a Link", new_link_path, :class => 'submit-link'
 
-
+%h2= "Recently submitted"
 
 .links
-  - @links.each do |link|
-    = link_to link.title, link.url
+  %ol
+    - @links.each do |link|
+      %li
+        %span.link= link_to link.title, link.url
+        %span.timestamp= "submitted #{link.created_at.pretty_ago}"

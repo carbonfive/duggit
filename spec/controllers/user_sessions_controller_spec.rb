@@ -12,17 +12,34 @@ describe UserSessionsController do
   end
 
   describe '#create' do
-    before do
-      @user = Factory :user
-      post :create, :user_session => { :username => @user.username, :password => @user.password }
+    context 'given a valid login' do
+      before do
+        @user = Factory :user
+        post :create, :user_session => { :username => @user.username, :password => @user.password }
+      end
+
+      it 'creates a new user session' do
+        session[:user_credentials_id].should == @user.id
+      end
+
+      it 'redirects to the home page' do
+        response.should redirect_to(root_path)
+      end
     end
 
-    it 'creates a new user session' do
-      session[:user_credentials_id].should == @user.id
-    end
+    context 'given an invalid login' do
+      before do
+        @user = Factory :user
+        post :create, :user_session => { :username => @user.username, :password => 'garbage' }
+      end
 
-    it 'redirects to the home page' do
-      response.should redirect_to(root_path)
+      it 'does not log me in' do
+        session[:user_credentials].should_not be
+      end
+
+      it 'goes back to the login page' do
+        response.should redirect_to(new_user_session_path)
+      end
     end
   end
 
