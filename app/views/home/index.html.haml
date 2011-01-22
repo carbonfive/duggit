@@ -1,1 +1,7 @@
 = link_to "Submit a Link", new_link_path, :class => 'submit-link'
+
+
+
+.links
+  - @links.each do |link|
+    = link_to link.title, link.url
