@@ -5,6 +5,18 @@
   padding: 10px; }
   #body .submit-link {
     font-size: 14pt; }
+  #body .flash {
+    text-align: center; }
+    #body .flash .error {
+      color: red; }
+  #body h2 {
+    margin: 20px 0 10px 0; }
+  #body .links .link {
+    font-size: 12pt;
+    margin-right: 15px; }
+  #body .links .timestamp {
+    font-size: 8pt;
+    color: #aaa; }
 
 #header {
   padding: 10px;

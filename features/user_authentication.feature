@@ -15,11 +15,19 @@ Feature: User authentication
       And I should see "Logout"
       And I should not see "Login"
 
-  Scenario: Log out
+  Scenario: Log in unsuccessfully
     Given the following user exists:
       | username  | password | password_confirmation |
       | mwynholds | password | password              |
-    When I am logged in as "mwynholds" with password "password"
+     When I go to the login page
+      And I fill in "Username" with "mwynholds"
+      And I fill in "Password" with "bunk"
+      And I press "Login"
+     Then I should be on the login page
+      And I should see "Please try again"
+
+  Scenario: Log out
+    When I am logged in as "mwynholds"
      And I follow "Logout"
     Then I should be on the home page
      And I should not see "Logout"
