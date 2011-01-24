@@ -4,6 +4,7 @@
 #body {
   padding: 10px; }
   #body .submit-link {
+    float: right;
     font-size: 14pt; }
   #body .flash {
     text-align: center; }
