@@ -32,8 +32,8 @@ describe LinksController do
 
   describe '#create' do
     before do
-      user = Factory :user
-      login(@request, user)
+      @user = Factory :user
+      login(@request, @user)
       @count = Link.count
       post :create, :link => { :title => 'title', :url => 'http://example.com' }
       @link = Link.find assigns(:link).id
@@ -46,6 +46,10 @@ describe LinksController do
     it 'save the link properties' do
       @link.title.should == 'title'
       @link.url.should == 'http://example.com'
+    end
+
+    it 'belongs to the logged in user' do
+      @link.author.should == @user
     end
 
     it 'redirects me to the home page' do
