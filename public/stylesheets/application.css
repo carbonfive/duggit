@@ -12,6 +12,14 @@
       color: red; }
   #body h2 {
     margin: 20px 0 10px 0; }
+  #body .links .vote {
+    font-size: 10pt;
+    display: inline-block;
+    width: 60px; }
+  #body .links .value {
+    font-size: 12pt;
+    display: inline-block;
+    width: 20px; }
   #body .links .link {
     font-size: 12pt;
     margin-right: 15px; }
@@ -34,7 +42,7 @@
 
 #login {
   padding: 10px;
-  margin: 150px auto 0 auto;
+  margin: 50px auto 0 auto;
   width: 400px;
   border: 1px solid gray;
   background-color: #ffdf80;
@@ -53,7 +61,7 @@
 
 #register {
   padding: 10px;
-  margin: 150px auto 0 auto;
+  margin: 50px auto 0 auto;
   width: 400px;
   border: 1px solid gray;
   background-color: #ffdf80;
