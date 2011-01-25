@@ -1,10 +1,11 @@
 class VotesController < ApplicationController
 
   before_filter :require_authentication
-  before_filter :validate_ownership
 
   def create
-    vote = Vote.new params[:vote].merge(:user => current_user, :link_id => params[:link_id])
+    link = Link.find params[:link_id]
+    vote = link.votes.new params[:vote]
+    vote.user = current_user
     unless vote.save
       flash[:error] = "Unable to tally your vote"
     end
@@ -13,9 +14,9 @@ class VotesController < ApplicationController
   end
 
   def update
-    vote = Vote.find params[:id]
-    vote.update_attributes params[:vote]
-    unless vote.save
+    link = Link.find params[:link_id]
+    vote = link.votes.find params[:id]
+    unless vote.update_attributes params[:vote]
       flash[:error] = "Unable to tally your vote"
     end
 
@@ -27,14 +28,6 @@ class VotesController < ApplicationController
   def require_authentication
     unless logged_in?
       flash[:message] = "You must be logged in"
-      redirect_to root_path
-    end
-  end
-
-  def validate_ownership
-    link = Link.where(:id => params[:link_id]).first
-    if link.author == current_user
-      flash[:error] = "You cannot vote for your own links"
       redirect_to root_path
     end
   end

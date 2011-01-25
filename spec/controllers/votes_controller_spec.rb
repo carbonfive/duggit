@@ -1,24 +1,23 @@
 require 'spec_helper'
 
 describe VotesController do
-  before do
-    @user1 = Factory :user
-    @user2 = Factory :user
-  end
 
   describe '#create' do
-    context 'Someone else submitted this link' do
+    context 'given someone else submitted this link' do
       before do
-        link = Factory :link, :author => @user1
-        login(@request, @user2)
+        linker = Factory :user
+        link = Factory :link, :author => linker
+
+        voter = Factory :user
+        login voter
 
         post :create, :link_id => link.id, :vote => { :value => 1 }
 
-        @votes = Vote.where(:user_id => @user2.id).where(:link_id => link.id)
+        @votes = Vote.where(:user_id => voter.id).where(:link_id => link.id)
       end
 
       it 'saves the vote' do
-        @votes.length.should == 1
+        @votes.should have(1).vote
         @votes.first.value.should == 1
       end
 
@@ -27,18 +26,19 @@ describe VotesController do
       end
     end
 
-    context 'I submitted this link' do
+    context 'given I submitted this link' do
       before do
-        link = Factory :link, :author => @user1
-        login(@request, @user1)
+        linker = Factory :user
+        link = Factory :link, :author => linker
+        login linker
 
         post :create, :link_id => link.id, :vote => { :value => 1 }
 
-        @votes = Vote.where(:user_id => @user1.id).where(:link_id => link.id)
+        @votes = Vote.where(:user_id => linker.id).where(:link_id => link.id)
       end
 
-      it 'saves nothing' do
-        @votes.length.should == 0
+      it 'does NOT save the vote' do
+        @votes.should have(0).votes
       end
     end
 
@@ -46,13 +46,16 @@ describe VotesController do
 
   describe '#update' do
     before do
-      link = Factory :link, :author => @user1
-      vote = Vote.create :link => link, :user => @user2, :value => 1
-      login(@request, @user2)
+      linker = Factory :user
+      link = Factory :link, :author => linker
+
+      voter = Factory :user
+      vote = Vote.create :link => link, :user => voter, :value => 1
+      login voter
 
       put :update, :link_id => link.id, :id => vote.id, :vote => { :value => -1 }
 
-      @votes = Vote.where(:user_id => @user2.id).where(:link_id => link.id)
+      @votes = Vote.where(:user_id => voter.id).where(:link_id => link.id)
     end
 
     it 'updates the vote' do
