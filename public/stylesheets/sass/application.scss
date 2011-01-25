@@ -12,7 +12,7 @@ $font-size: 16pt;
 
 @mixin dialog {
   padding: 10px;
-  margin: 150px auto 0 auto;
+  margin: 50px auto 0 auto;
   width: 400px;
   border: 1px solid gray;
   background-color: $light-background;
@@ -52,6 +52,16 @@ $font-size: 16pt;
   h2 { margin: 20px 0 10px 0; }
 
   .links {
+    .vote {
+      font-size: $font-size - 6;
+      display: inline-block;
+      width: 60px;
+    }
+    .value {
+      font-size: $font-size - 4;
+      display: inline-block;
+      width: 20px;
+    }
     .link {
       font-size: $font-size - 4;
       margin-right: 15px;

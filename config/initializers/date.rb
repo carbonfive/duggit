@@ -2,15 +2,21 @@ class Time
   def pretty_ago
     s = Time.new.to_i - self.to_i
     if s < 1.minute
-      "#{s} seconds ago"
+      _ago(s, "second")
     elsif s < 1.hour
-      "#{s / 1.minute} minutes ago"
+      _ago(s / 1.minute, "minute")
     elsif s < 1.day
-      "#{s / 1.hour} hours ago"
+      _ago(s / 1.hour, "hour")
     elsif s < 1.year
-      "#{s / 1.day} days ago"
+      _ago(s / 1.day, "day")
     else
-      "#{s / 1.year} years ago"
+      _ago(s / 1.year, "year")
     end
+  end
+
+  private
+
+  def _ago(n, unit)
+    "#{n} #{unit}#{n > 1 ? 's' : ''} ago"
   end
 end

@@ -4,5 +4,7 @@ Duggit::Application.routes.draw do
 
   resources :users
   resource :user_session
-  resources :links
+  resources :links do
+    resources :votes
+  end
 end
