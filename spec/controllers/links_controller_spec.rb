@@ -6,7 +6,7 @@ describe LinksController do
     context 'given the current user is logged in' do
       before do
         user = Factory :user
-        login(@request, user)
+        login user
         get :new
       end
 
@@ -33,7 +33,7 @@ describe LinksController do
   describe '#create' do
     before do
       @user = Factory :user
-      login(@request, @user)
+      login @user
       @count = Link.count
       post :create, :link => { :title => 'title', :url => 'http://example.com' }
       @link = Link.find assigns(:link).id
