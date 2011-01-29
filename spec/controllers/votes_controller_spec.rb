@@ -3,69 +3,97 @@ require 'spec_helper'
 describe VotesController do
 
   describe '#create' do
-    context 'given someone else submitted this link' do
+    context 'given a valid vote' do
       before do
-        linker = Factory :user
-        link = Factory :link, :author => linker
+        @id = 1
+        @link = stub 'link'
+        @link.
+          stubs(:votes).
+          returns(Vote)
+        Link.
+          stubs(:find).
+          with(@id).
+          returns(@link)
 
-        voter = Factory :user
-        login voter
+        @params = {}
+        user = Factory :user
+        @vote = stub 'vote' 
+        @vote.
+          stubs(:user=).
+          with(user)
+        @vote.
+          stubs(:save).
+          with().
+          returns(true)
+        Vote.
+          stubs(:new).
+          with(@params).
+          returns(@vote)
 
-        post :create, :link_id => link.id, :vote => { :value => 1 }
-
-        @votes = Vote.where(:user_id => voter.id).where(:link_id => link.id)
+        login user
+        post :create, 
+          :link_id => @id,
+          :vote => @params
       end
 
-      it 'saves the vote' do
-        @votes.should have(1).vote
-        @votes.first.value.should == 1
+      it 'creates a new vote' do
+        Link.should have_received(:find).with(@id)
+        Vote.should have_received(:new).with(@params)
+        @vote.should have_received(:save).with()
       end
 
-      it 'redirects me to the home page' do
-        response.should redirect_to(root_path)
+      it 'redirects to the homepage' do
+        response.should redirect_to root_path
       end
     end
 
-    context 'given I submitted this link' do
+    context 'given an invalid vote' do
       before do
-        linker = Factory :user
-        link = Factory :link, :author => linker
-        login linker
+        @id = 1
+        @link = stub 'link'
+        @link.
+          stubs(:votes).
+          returns(Vote)
+        Link.
+          stubs(:find).
+          with(@id).
+          returns(@link)
 
-        post :create, :link_id => link.id, :vote => { :value => 1 }
+        @params = {}
+        user = Factory :user
+        @vote = stub 'vote' 
+        @vote.
+          stubs(:user=).
+          with(user)
+        @vote.
+          stubs(:save).
+          with().
+          returns(false)
+        Vote.
+          stubs(:new).
+          with(@params).
+          returns(@vote)
 
-        @votes = Vote.where(:user_id => linker.id).where(:link_id => link.id)
+        login user
+        post :create, 
+          :link_id => @id,
+          :vote => @params
       end
 
-      it 'does NOT save the vote' do
-        @votes.should have(0).votes
+      it 'does NOT create a new vote' do
+        Link.should have_received(:find).with(@id)
+        Vote.should have_received(:new).with(@params)
+        @vote.should have_received(:save).with()
+      end
+
+      it 'sets a flash message' do
+        flash[:error].should be
+      end
+
+      it 'redirects to the homepage' do
+        response.should redirect_to root_path
       end
     end
-
   end
 
-  describe '#update' do
-    before do
-      linker = Factory :user
-      link = Factory :link, :author => linker
-
-      voter = Factory :user
-      vote = Vote.create :link => link, :user => voter, :value => 1
-      login voter
-
-      put :update, :link_id => link.id, :id => vote.id, :vote => { :value => -1 }
-
-      @votes = Vote.where(:user_id => voter.id).where(:link_id => link.id)
-    end
-
-    it 'updates the vote' do
-      @votes.length.should == 1
-      @votes.first.value.should == -1
-    end
-
-    it 'redirects me to the home page' do
-      response.should redirect_to(root_path)
-    end
-  end
-  
 end

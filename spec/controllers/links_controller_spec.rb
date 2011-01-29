@@ -41,33 +41,26 @@ describe LinksController do
 
   describe '#create' do
     before do
-      @user = Factory :user
-
-      @user_session = stub 'user session'
-      @user_session.
-        stubs(:user).
-        returns(@user)
-
-      UserSession.
-        stubs(:find).
-        with().
-        returns(@user_session)
-    
       @params = {}
       @link = stub 'link'
       @link.
         stubs(:save).
         with()
+
       Link.
         stubs(:new).
         with(@params).
         returns(@link)
+
+      user = Factory :user
+      login user
 
       post :create, 
         :link => @params
     end
 
     it 'creates a new link' do
+      Link.should have_received(:new).with(@params)
       @link.should have_received(:save).with()
     end
 
