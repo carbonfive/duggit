@@ -2,29 +2,49 @@ require 'spec_helper'
 
 describe Link do
 
-    # context 'given 30+ links in the system' do
-    #   before do
-    #     (1..40).each do |i|
-    #       Link.create :title => i.to_s, :url => 'http://www.carbonfive.com'
-    #     end
+  describe '.recent' do
+    before do
+      4.times do |n|
+        Factory(:link,
+                :created_at => n.days.from_now)
+      end
 
-    #     get :index
+      @limit = 3
+      @links = Link.recent :limit => @limit
+    end
 
-    # @links = Link.order('created_at DESC').limit(30)
-    #     @links = assigns(:links)
-    #   end
+    it 'finds links ordered most recently created first' do
+      @links.each_with_index do |link, index|
+        if @links[index.succ]
+          link.created_at.should be > @links[index.succ].created_at
+        end
+      end
+    end
 
-    #   it 'should get the last 30 links in reverse chronological order' do
-    #     @links.collect(&:title).should == (11..40).to_a.reverse.collect(&:to_s)
-    #   end
+    it 'finds the given number of links' do
+      @links.should have(@limit).links
+    end
+  end
 
-    #   it 'should go to the home page' do
-    #     response.should render_template(:index)
-    #   end
+  describe '#value' do
+    before do
+      link = Factory :link
+      Factory(:vote,
+              :link => link,
+              :value => 1)
+      Factory(:vote,
+              :link => link,
+              :value => -1)
+      Factory(:vote,
+              :link => link,
+              :value => 1)
 
-    #   it 'is routed to from "/"' do
-    #     { :get => '/' }.should route_to(:controller => 'links',
-    #                                     :action => 'index')
-    #   end
-    # end
+      @value = link.value
+    end
+
+    it 'returns the the sum of its votes' do
+      @value.should == 1
+    end
+  end
+
 end

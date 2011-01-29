@@ -15,7 +15,7 @@ class LinksController < ApplicationController
   end
 
   def index
-    @links = Link.recent
+    @links = Link.recent :limit => 30
   end
 
 end

@@ -76,17 +76,17 @@ describe LinksController do
   describe '#index' do
     before do
       @links = stub 'recent links'
-
+      @limit = 30
       Link.
         stubs(:recent).
-        with().
+        with(:limit => @limit).
         returns(@links)
 
       get :index
     end
 
     it 'finds recent links' do
-      Link.should have_received(:recent).with()
+      Link.should have_received(:recent).with(:limit => @limit)
       assigns(:links).should == @links
     end
 
