@@ -1,39 +1,46 @@
 require 'spec_helper'
 
 describe UsersController do
+
   describe '#new' do
     before do
+      @user = stub 'user'
+      User.
+        stubs(:new).
+        with().
+        returns(@user)
+
       get :new
     end
 
+    it 'creates a new user' do
+      User.should have_received(:new).with()
+      assigns(:user).should == @user
+    end
+
     it 'displays the registration page' do
-      response.should render_template(:new)
+      response.should render_template :new
     end
   end
 
   describe '#create' do
-    context  'given a username and password' do
-      before do
-        @count = User.count
-        post :create,
-             :user => { :username => 'iceman', :password => 'dangerous', :password_confirmation => 'dangerous' }
-        @user = assigns(:user)
-      end
-
-      it 'creates a new user' do
-        User.count.should == @count + 1
-        @user.should be
-      end
-
-      it 'with the username and password' do
-        @user.username.should == 'iceman'
-        @user.password.should == 'dangerous'
-      end
-
-      it 'redirects us to the home page' do
-        response.should redirect_to root_path
-      end
+    before do
+      @params = {}
+      User.
+        stubs(:create).
+        with(@params)
+        
+      post :create,
+        :user => @params
     end
 
+    it 'creates a new user' do
+      User.should have_received(:create).with(@params)
+    end
+
+    it 'redirects to the homepage' do
+      response.should redirect_to root_path
+    end
   end
+
 end
