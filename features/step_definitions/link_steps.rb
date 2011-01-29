@@ -1,7 +1,5 @@
-
-     # Then I should see "Link 1" within "#link-1"
-     #  And I should see "submitted by user2" within "#link-1"
-     #  And I should see "Link 2" within "#link-2"
-     #  And I should see "submitted by user1" within "#link-2"
-     #  And I should see "Link 3" within "#link-3"
-     #  And I should see "submitted by user1" within "#link-3"
+Then /^I should see the links in the following order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |first, second, third|
+  page.should have_css('ol li:nth-child(1)', :text => first)
+  page.should have_css('ol li:nth-child(2)', :text => second)
+  page.should have_css('ol li:nth-child(3)', :text => third)
+end
