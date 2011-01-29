@@ -18,7 +18,7 @@ Factory.define :link do |link|
 end
 
 Factory.define :vote do |vote|
-  vote.value 0
+  vote.value 1
   vote.association :user, :factory => :user
   vote.association :link, :factory => :link
 end
