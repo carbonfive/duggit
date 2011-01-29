@@ -18,4 +18,11 @@ class ApplicationController < ActionController::Base
   def logged_in?
     current_user.present?
   end
+
+  def authenticate
+    unless logged_in?
+      redirect_to new_user_session_path
+    end
+  end
+
 end
