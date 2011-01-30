@@ -65,7 +65,7 @@ describe LinksController do
     end
 
     it 'sets a flash message' do
-      flash[:message].should be
+      flash[:notice].should be
     end
     
     it 'redirects to the homepage' do

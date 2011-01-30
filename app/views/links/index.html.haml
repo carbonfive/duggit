@@ -5,18 +5,20 @@
 .links
   %ol
     - @links.each do |link|
-      %li{:id => "link-#{link.id}"}
+      %li
         %span.vote
           - if logged_in? 
-            - if current_user != link.author
-              %span.up= link_to 'up', link_votes_path(:link_id => link.id, :vote => { :value => 1 }), :method => :post
-              %span.down= link_to 'down', link_vote_path(:link_id => link.id, :id => vote.id, :vote => { :value => -1 }), :method => :post
+            - if current_user.eligible_to_vote_on?(link, :direction => 'up')
+              %span.up= link_to 'up', link_votes_path(link, :vote => { :value => 1 }), :method => :post
+            - else
+              %span.up= 'up'
+            - if current_user.eligible_to_vote_on?(link, :direction => 'down')
+              %span.down= link_to 'down', link_votes_path(link, :vote => { :value => -1 }), :method => :post
             - else
               %span.down= 'down'
-              %span.up= 'up'
           - else
-            %span.down= 'down'
             %span.up= 'up'
+            %span.down= 'down'
         %span.value= link.value
         %span.link= link_to link.title, link.url
-        %span.timestamp= "submitted by #{link.author_name} #{link.created_at.pretty_ago}"
+        %span.timestamp= "submitted by #{link.author.username} #{time_ago_in_words link.created_at} ago"

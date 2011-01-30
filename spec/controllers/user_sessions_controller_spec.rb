@@ -71,7 +71,7 @@ describe UserSessionsController do
       end
 
       it 'sets a flash message' do
-        flash[:error].should be
+        flash[:alert].should be
       end
 
       it 'redirects to the login page' do

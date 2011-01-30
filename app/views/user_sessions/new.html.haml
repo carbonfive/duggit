@@ -1,14 +1,12 @@
 #login
   %h2 Login
 
-  = form_for @user_session, :as => :user_session, :url => user_session_path do |f|
+  = form_for @user_session, :as => :user_session, :url => user_session_path do |form|
     %fieldset
-      = f.label :username
-      = f.text_field :username
-
+      = form.label :username
+      = form.text_field :username
     %fieldset
-      = f.label :password
-      = f.password_field :password
-
+      = form.label :password
+      = form.password_field :password
     %fieldset
-      = f.submit "Login"
+      = form.submit "Login"

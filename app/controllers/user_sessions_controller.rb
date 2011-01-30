@@ -9,7 +9,7 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       redirect_to root_path
     else
-      flash[:error] = 'Invalid login.  Please try again'
+      flash[:alert] = 'Invalid login.  Please try again'
       redirect_to new_user_session_path
     end
   end

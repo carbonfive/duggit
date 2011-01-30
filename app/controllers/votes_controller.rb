@@ -7,7 +7,7 @@ class VotesController < ApplicationController
     vote = link.votes.new params[:vote]
     vote.user = current_user
     unless vote.save
-      flash[:error] = "Unable to tally your vote"
+      flash[:alert] = "Unable to tally your vote"
     end
     redirect_to root_path
   end
