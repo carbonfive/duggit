@@ -8,11 +8,11 @@
       %li
         %span.vote
           - if logged_in? 
-            - if current_user.eligible_to_vote_on?(link, :direction => 'up')
-              %span.up= link_to 'up', link_votes_path(link, :vote => { :value => 1 }), :method => :post
+            - if current_user.eligible_to_vote?(+1, :on => link)
+              %span.up= link_to 'up', link_votes_path(link, :vote => { :value => +1 }), :method => :post
             - else
               %span.up= 'up'
-            - if current_user.eligible_to_vote_on?(link, :direction => 'down')
+            - if current_user.eligible_to_vote?(-1, :on => link)
               %span.down= link_to 'down', link_votes_path(link, :vote => { :value => -1 }), :method => :post
             - else
               %span.down= 'down'

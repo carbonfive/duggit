@@ -45,21 +45,7 @@ describe Vote do
       end
     end
 
-    context 'when trying to vote twice on the same link' do
-      before do
-        user = Factory :user
-        link = Factory :link
-        Factory :vote, :user => user, :link => link
-
-        @vote = Factory.build :vote, :user => user, :link => link
-      end
-
-      it 'fails' do
-        @vote.should_not be_valid
-      end
-    end
-
-    context 'when trying to vote on your own link' do
+    context 'given a vote on a link the user submitted' do
       before do
         user = Factory :user
         link = Factory :link, :author => user
@@ -69,6 +55,53 @@ describe Vote do
 
       it 'fails' do
         @vote.should_not be_valid
+      end
+    end
+
+    context 'given a vote identical to one the user has already made' do
+      before do
+        user = Factory :user
+        link = Factory :link
+        Factory :up_vote, :user => user, :link => link
+
+        @vote = Factory.build :up_vote, :user => user, :link => link
+      end
+
+      it 'fails' do
+        @vote.should_not be_valid
+      end
+    end
+
+    context 'given an up-vote for a link the user already cast a down-vote on' do
+      before do
+        link = Factory :link
+        user = Factory :user
+        Factory(:down_vote,
+                :link => link,
+                :user => user)
+
+        @vote = Factory.build :up_vote, :user => user, :link => link
+      end
+
+      it 'passes' do
+        @vote.should be_valid
+      end
+    end
+
+    context 'given a down-vote for a link the user already case an up-vote on' do
+      before do
+        link = Factory :link
+        user = Factory :user
+        Factory(:up_vote,
+                :value => 1,
+                :link => link,
+                :user => user)
+
+        @vote = Factory.build :down_vote, :user => user, :link => link
+      end
+
+      it 'passes' do
+        @vote.should be_valid
       end
     end
   end

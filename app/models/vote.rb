@@ -5,9 +5,9 @@ class Vote < ActiveRecord::Base
 
   validates :user_id, :presence => true
   validates :link_id, :presence => true
-  validates :value, :presence => true, :inclusion => [-1, 1]
+  validates :value, :inclusion => [-1, 1]
+  validates :value, :uniqueness => { :scope => [:link_id, :user_id] }
   validate :not_link_submitter, :if => :link
-  validates :user_id, :uniqueness => { :scope => :link_id }
 
  protected
 

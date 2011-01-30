@@ -22,3 +22,13 @@ Factory.define :vote do |vote|
   vote.association :user, :factory => :user
   vote.association :link, :factory => :link
 end
+
+Factory.define(:up_vote, 
+               :parent => :vote) do |vote|
+  vote.value 1
+end
+
+Factory.define(:down_vote, 
+               :parent => :vote) do |vote|
+  vote.value -1
+end
