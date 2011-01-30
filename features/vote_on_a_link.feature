@@ -11,6 +11,7 @@ Feature: Vote on a link
       And the following links exist:
         | title  | user              |
         | Link 1 | username: userone |
+        | Link 2 | username: usertwo |
 
   Scenario: Vote up a link
     Given I am logged in as "usertwo/password"
@@ -32,7 +33,7 @@ Feature: Vote on a link
 
   Scenario: Try to vote on my own link
     Given I am logged in as "userone/password"
-     When I am on the home page
+     When I go to the home page
      Then I should not be able to up-vote "Link 1"
       And I should not be able to down-vote "Link 1"
 

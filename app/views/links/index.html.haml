@@ -1,24 +1,23 @@
 = link_to "Submit a Link", new_link_path, :class => 'submit-link'
 
-%h2= "Recently submitted"
+%h2 Recently submitted
 
 .links
   %ol
     - @links.each do |link|
-      %li
-        %span.vote
-          - if logged_in? 
-            - if current_user.eligible_to_vote?(+1, :on => link)
-              %span.up= link_to 'up', link_votes_path(link, :vote => { :value => +1 }), :method => :post
-            - else
-              %span.up= 'up'
-            - if current_user.eligible_to_vote?(-1, :on => link)
-              %span.down= link_to 'down', link_votes_path(link, :vote => { :value => -1 }), :method => :post
-            - else
-              %span.down= 'down'
+      %li{ :id => dom_id(link) }
+        - if logged_in? 
+          - if current_user.eligible_to_vote?(+1, :on => link)
+            = link_to 'up', link_votes_path(link, :vote => { :value => +1 }), :method => :post
           - else
-            %span.up= 'up'
-            %span.down= 'down'
-        %span.value= link.value
-        %span.link= link_to link.title, link.url
-        %span.timestamp= "submitted by #{link.user.username} #{time_ago_in_words link.created_at} ago"
+            up
+          - if current_user.eligible_to_vote?(-1, :on => link)
+            = link_to 'down', link_votes_path(link, :vote => { :value => -1 }), :method => :post
+          - else
+            down
+        - else
+          up
+          down
+        = link.value
+        = link_to link.title, link.url
+        submitted by #{link.user.username} #{time_ago_in_words link.created_at} ago
