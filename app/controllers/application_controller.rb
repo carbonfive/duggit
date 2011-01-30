@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     @_current_user_session ||= UserSession.find
   end
 
-  def authenticate
+  def require_authentication
     unless logged_in?
       redirect_to new_user_session_path
     end

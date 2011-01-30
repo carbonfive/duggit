@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
 
-  before_filter :authenticate,
+  before_filter :require_authentication,
     :only => [:new, :create]
 
   def new

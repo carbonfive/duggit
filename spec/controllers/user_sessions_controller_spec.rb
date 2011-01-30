@@ -74,7 +74,7 @@ describe UserSessionsController do
         flash.now[:alert].should be
       end
 
-      it 're-displays the login page' do
+      it 'displays the login page' do
         response.should render_template :new
       end
     end

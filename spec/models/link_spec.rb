@@ -14,6 +14,7 @@ describe Link do
     end
 
     it 'finds links ordered most recently created first' do
+      @links.should have_at_least(2).links
       @links.each_with_index do |link, index|
         if @links[index.succ]
           link.created_at.should be > @links[index.succ].created_at

@@ -1,6 +1,6 @@
 class VotesController < ApplicationController
 
-  before_filter :authenticate
+  before_filter :require_authentication
 
   def create
     link = Link.find params[:link_id]

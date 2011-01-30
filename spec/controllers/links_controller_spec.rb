@@ -40,36 +40,48 @@ describe LinksController do
   end
 
   describe '#create' do
-    before do
-      @params = {}
-      @link = stub 'link'
-      @link.
-        stubs(:save).
-        with()
+    context 'when logged in' do
+      before do
+        @params = {}
+        @link = stub 'link'
+        @link.
+          stubs(:save).
+          with()
 
-      Link.
-        stubs(:new).
-        with(@params).
-        returns(@link)
+        Link.
+          stubs(:new).
+          with(@params).
+          returns(@link)
 
-      user = Factory :user
-      login user
+        user = Factory :user
+        login user
 
-      post :create, 
-        :link => @params
+        post :create, 
+          :link => @params
+      end
+
+      it 'creates a new link' do
+        Link.should have_received(:new).with(@params)
+        @link.should have_received(:save).with()
+      end
+
+      it 'sets a flash message' do
+        flash[:notice].should be
+      end
+
+      it 'redirects to the homepage' do
+        response.should redirect_to root_path
+      end
     end
 
-    it 'creates a new link' do
-      Link.should have_received(:new).with(@params)
-      @link.should have_received(:save).with()
-    end
+    context 'when not logged in' do
+      before do
+        post :create
+      end
 
-    it 'sets a flash message' do
-      flash[:notice].should be
-    end
-    
-    it 'redirects to the homepage' do
-      response.should redirect_to root_path
+      it 'redirects to the login page' do
+        response.should redirect_to new_user_session_path
+      end
     end
   end
 
@@ -90,13 +102,8 @@ describe LinksController do
       assigns(:links).should == @links
     end
 
-    it 'renders the homepage' do
+    it 'displays the homepage' do
       response.should render_template :index
-    end
-
-    it 'is routed to from "/"' do
-      { :get => '/' }.should route_to(:controller => 'links',
-                                      :action => 'index')
     end
   end
 
