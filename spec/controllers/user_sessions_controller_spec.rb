@@ -71,11 +71,11 @@ describe UserSessionsController do
       end
 
       it 'sets a flash message' do
-        flash[:alert].should be
+        flash.now[:alert].should be
       end
 
-      it 'redirects to the login page' do
-        response.should redirect_to new_user_session_path
+      it 're-displays the login page' do
+        response.should render_template :new
       end
     end
   end

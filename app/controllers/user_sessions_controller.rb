@@ -9,13 +9,13 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       redirect_to root_path
     else
-      flash[:alert] = 'Invalid login.  Please try again'
-      redirect_to new_user_session_path
+      flash.now[:alert] = 'Invalid login.  Please try again'
+      render :new
     end
   end
 
   def destroy
-    current_user_session && current_user_session.destroy
+    current_user_session.destroy
     reset_session
     redirect_to root_path
   end
