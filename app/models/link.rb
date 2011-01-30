@@ -1,10 +1,7 @@
 class Link < ActiveRecord::Base
 
-  belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
+  belongs_to :user
   has_many :votes
-  has_many :voters,
-    :through => :votes,
-    :source => :user
 
   def self.recent(args)
     order('created_at DESC').

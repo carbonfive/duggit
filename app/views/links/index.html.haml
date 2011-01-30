@@ -21,4 +21,4 @@
             %span.down= 'down'
         %span.value= link.value
         %span.link= link_to link.title, link.url
-        %span.timestamp= "submitted by #{link.author.username} #{time_ago_in_words link.created_at} ago"
+        %span.timestamp= "submitted by #{link.user.username} #{time_ago_in_words link.created_at} ago"

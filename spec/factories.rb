@@ -14,7 +14,7 @@ end
 Factory.define :link do |link|
   link.title 'Carbon Five'
   link.url 'http://www.carbonfive.com'
-  link.association :author, :factory => :user
+  link.association :user, :factory => :user
 end
 
 Factory.define :vote do |vote|

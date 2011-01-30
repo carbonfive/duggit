@@ -9,7 +9,7 @@ Feature: Vote on a link
       | userone    | password |
       | usertwo    | password |
       And the following links exist:
-        | title  | author            |
+        | title  | user              |
         | Link 1 | username: userone |
 
   Scenario: Vote up a link

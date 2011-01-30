@@ -48,7 +48,7 @@ describe Vote do
     context 'given a vote on a link the user submitted' do
       before do
         user = Factory :user
-        link = Factory :link, :author => user
+        link = Factory :link, :user => user
 
         @vote = Factory.build :vote, :user => user, :link => link
       end
