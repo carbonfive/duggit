@@ -1,11 +1,11 @@
-Feature: Link Posting
-  So that others can see interesting links
-  As a logged in user
-  I can post a url and a title
+Feature: Submit a link
+  In order to share interesting links
+  As a user
+  I can submit a link
 
-  Scenario: Post a link
-    When I am logged in as "mwynholds"
-     And I am on the home page
+  Scenario: Submit a link
+    Given I am a registered user
+    When I go to the home page
      And I follow "Submit a Link"
      And I fill in "Title" with "title"
      And I fill in "Url" with "http://example.com"

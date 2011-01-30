@@ -1,9 +1,7 @@
 .link-form
-  = form_for @link do |f|
-    = f.label :title
-    = f.text_field :title
-
-    = f.label :url
-    = f.text_field :url
-
-    = f.submit 'Submit'
+  = form_for @link do |form|
+    = form.label :title
+    = form.text_field :title
+    = form.label :url
+    = form.text_field :url
+    = form.submit 'Submit'
