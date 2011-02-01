@@ -6,7 +6,7 @@ end
 
 Then /^I should see "([^"]*)" as the value for "([^"]*)"$/ do |value, link|
   within_link link do
-    page.should have_content(value)
+    page.should have_css('.value', :text => value)
   end
 end
 
