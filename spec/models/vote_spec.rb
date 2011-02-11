@@ -58,20 +58,6 @@ describe Vote do
       end
     end
 
-    context 'given a vote identical to one the user has already made' do
-      before do
-        user = Factory :user
-        link = Factory :link
-        Factory :up_vote, :user => user, :link => link
-
-        @vote = Factory.build :up_vote, :user => user, :link => link
-      end
-
-      it 'fails' do
-        @vote.should_not be_valid
-      end
-    end
-
     context 'given an up-vote for a link the user already cast a down-vote on' do
       before do
         link = Factory :link
