@@ -20,7 +20,6 @@ Feature: Vote on a link
      Then I should be on the home page
       And I should see "1" as the value for "Link 1"
       And I should be able to down-vote "Link 1"
-      But I should not be able to up-vote "Link 1"
 
   Scenario: Vote down a link
     Given I am logged in as "usertwo/password"
@@ -29,7 +28,6 @@ Feature: Vote on a link
      Then I should be on the home page
       And I should see "-1" as the value for "Link 1"
       And I should be able to up-vote "Link 1"
-      But I should not be able to down-vote "Link 1"
 
   Scenario: Change your vote on a link
     Given I am logged in as "usertwo/password"
