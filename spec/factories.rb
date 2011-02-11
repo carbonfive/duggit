@@ -19,8 +19,8 @@ end
 
 Factory.define :vote do |vote|
   vote.value 1
-  vote.association :user, :factory => :user
-  vote.association :link, :factory => :link
+  vote.user_id { Factory(:user).id }
+  vote.link_id { Factory(:link).id }
 end
 
 Factory.define(:up_vote, 
