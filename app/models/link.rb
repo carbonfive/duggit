@@ -18,6 +18,10 @@ class Link < ActiveRecord::Base
     where :title => title
   end
 
+  def votes
+    Vote.for_link self
+  end
+
   def value
     return 0 unless id
 
