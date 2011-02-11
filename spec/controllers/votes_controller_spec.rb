@@ -6,38 +6,27 @@ describe VotesController do
     context 'when logged in' do
       context 'and given a valid vote' do
         before do
-          link_id = 1
-          @link = stub 'link'
-          @link.
-            stubs(:votes).
-            returns(Vote)
-          Link.
-            stubs(:find).
-            with(link_id).
-            returns(@link)
-
-          @params = {}
-          @vote = stub 'vote' 
-          @vote.
-            stubs(:update_attributes).
-            with(@params).
-            returns(true)
-
+          link = Factory :link
           user = Factory :user
-          Vote.
-            stubs(:find_or_create_by_user_id).
-            with(user.id).
-            returns(@vote)
+
+          @value = 1
 
           login user
 
           post :create, 
-            :link_id => link_id,
-            :vote => @params
+            :link_id => link.id,
+            :vote => {:value => @value}
+
+          link.reload
+          @vote = link.votes.detect {|vote| vote.user_id = user.id}
         end
 
         it 'creates a new vote' do
-          @vote.should have_received(:update_attributes).with(@params)
+          @vote.should be
+        end
+
+        it 'sets the vote value' do
+          @vote.value.should == @value
         end
 
         it 'redirects to the homepage' do
@@ -47,37 +36,23 @@ describe VotesController do
 
       context 'and given an invalid vote' do
         before do
-          link_id = 1
-          @link = stub 'link'
-          @link.
-            stubs(:votes).
-            returns(Vote)
-          Link.
-            stubs(:find).
-            with(link_id).
-            returns(@link)
-
-          @params = {}
-          @vote = stub 'vote' 
-          @vote.
-            stubs(:update_attributes).
-            with(@params).
-            returns(false)
+          link = Factory :link
           user = Factory :user
-          Vote.
-            stubs(:find_or_create_by_user_id).
-            with(user.id).
-            returns(@vote)
+
+          invalid_value = 10
 
           login user
 
           post :create, 
-            :link_id => link_id,
-            :vote => @params
+            :link_id => link.id,
+            :vote => {:value => invalid_value}
+
+          link.reload
+          @vote = link.votes.detect {|vote| vote.user_id = user.id}
         end
 
         it 'does NOT create a new vote' do
-          @vote.should have_received(:update_attributes).with(@params)
+          @vote.should_not be
         end
 
         it 'sets a flash message' do
