@@ -8,25 +8,20 @@ describe VotesController do
         before do
           link = Factory :link
           user = Factory :user
-
-          @value = 1
+          old_total = link.value
 
           login user
-
           post :create, 
             :link_id => link.id,
-            :vote => {:value => @value}
+            :vote => {:value => 1}
 
           link.reload
           @vote = link.votes.detect {|vote| vote.user_id = user.id}
+          @diff = link.value - old_total
         end
 
-        it 'creates a new vote' do
-          @vote.should be
-        end
-
-        it 'sets the vote value' do
-          @vote.value.should == @value
+        it 'creates a new vote with the right value' do
+          @diff.should == 1
         end
 
         it 'redirects to the homepage' do
@@ -38,21 +33,20 @@ describe VotesController do
         before do
           link = Factory :link
           user = Factory :user
-
-          invalid_value = 10
+          old_total = link.value
 
           login user
-
           post :create, 
             :link_id => link.id,
-            :vote => {:value => invalid_value}
+            :vote => {:value => 10}
 
           link.reload
           @vote = link.votes.detect {|vote| vote.user_id = user.id}
+          @diff = link.value - old_total
         end
 
         it 'does NOT create a new vote' do
-          @vote.should_not be
+          @diff.should == 0
         end
 
         it 'sets a flash message' do
