@@ -3,31 +3,26 @@ require 'spec_helper'
 describe User do
 
   describe '#eligible_to_vote?' do
-    context 'given a link it can vote on' do
+    context 'given a link the user did NOT create' do
       before do
         @user = Factory :user
-
-        @link = stub 'link'
-        @link.
-          stubs(:votes).
-          returns(Vote)
-        @vote = stub 'vote'
-        @vote.
-          stubs(:user=).
-          with(@user)
-        @vote.
-          stubs(:valid?).
-          with().
-          returns(true)
-
-        Vote.
-          stubs(:new).
-          with(:value => @value).
-          returns(@vote)
+        @link = Factory :link
       end
 
       it 'returns true' do
-        @user.should be_eligible_to_vote(@value, :on => @link)
+        @user.should be_eligible_to_vote(@link)
+      end
+    end
+
+    context 'given a link the user did create' do
+      before do
+        @user = Factory :user
+        @link = Factory(:link,
+                        :user => @user)
+      end
+
+      it 'returns true' do
+        @user.should_not be_eligible_to_vote(@link)
       end
     end
   end
