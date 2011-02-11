@@ -1,0 +1,1 @@
+$cassandra = Cassandra.new( Rails.env.test? ? 'duggit_test' : 'duggit_development' )

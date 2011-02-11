@@ -27,6 +27,10 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  config.before do
+    $cassandra.clear_keyspace!
+  end
 end
 
 require 'rspec/core/formatters/base_text_formatter'

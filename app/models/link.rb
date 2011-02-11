@@ -1,7 +1,6 @@
 class Link < ActiveRecord::Base
 
   belongs_to :user
-  has_many :votes
 
   validates :user_id, :presence => true
   validates :title, :presence => true
@@ -17,7 +16,7 @@ class Link < ActiveRecord::Base
   end
 
   def value
-    votes.sum :value
+    Vote.count_for_link self
   end
 
 end

@@ -3,11 +3,14 @@ class VotesController < ApplicationController
   before_filter :require_authentication
 
   def create
-    link = Link.find params[:link_id]
-    vote = link.votes.find_or_create_by_user_id current_user.id 
-    unless vote.update_attributes params[:vote]
+    vote = Vote.new :user_id => current_user.id,
+                    :link_id => params[:link_id],
+                    :value => params[:vote][:value]
+
+    unless vote.save
       flash[:alert] = "Unable to tally your vote"
     end
+
     redirect_to root_path
   end
 
