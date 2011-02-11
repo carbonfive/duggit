@@ -5,10 +5,8 @@ class User < ActiveRecord::Base
   has_many :links
   has_many :votes
 
-  def eligible_to_vote?(value, args)
-    vote = args[:on].votes.new :value => value
-    vote.user = self
-    vote.valid?
+  def eligible_to_vote?(link)
+    link.user_id != id
   end
 
 end
