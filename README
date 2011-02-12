@@ -1,7 +1,7 @@
 Dependencies, native extensions:
 * ruby w/ zlib
-* libxslt-dev 
-* libxml2-dev
+* libxslt-dev (for nokogiri)
+* libxml2-dev (for nokogiri)
 
 == Welcome to Rails
 
