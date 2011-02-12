@@ -1,6 +1,6 @@
 Dependencies:
 * zlib: --with-zlib-dir=$rvm_path/usr
-* openssl: --with-openssl-dir=/usr/local
+* openssl: libssl-dev or --with-openssl-dir=/usr/local
 
 Dependencies (native extensions):
 * libxslt-dev (for nokogiri)
