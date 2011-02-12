@@ -2,7 +2,8 @@ Dependencies, native extensions:
 * ruby w/ zlib
 * libxslt-dev (for nokogiri)
 * libxml2-dev (for nokogiri)
-
+* sqlite3
+* libsqlite3-dev or sqlite3-devel
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create
