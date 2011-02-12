@@ -1,3 +1,8 @@
+Dependencies, native extensions:
+* ruby w/ zlib
+* libxslt-dev 
+* libxml2-dev
+
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create
