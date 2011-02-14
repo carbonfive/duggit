@@ -16,7 +16,6 @@ describe VotesController do
             :vote => {:value => 1}
 
           link.reload
-          @vote = link.votes.detect {|vote| vote.user_id = user.id}
           @diff = link.value - old_total
         end
 
@@ -41,7 +40,6 @@ describe VotesController do
             :vote => {:value => 10}
 
           link.reload
-          @vote = link.votes.detect {|vote| vote.user_id = user.id}
           @diff = link.value - old_total
         end
 
