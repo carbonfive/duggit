@@ -53,12 +53,4 @@ class Vote
     end
   end
 
-  def self.from_cassandra(link_id, c)
-    user_id = c[0].to_i
-    value = c[1].to_i
-    Vote.new :user_id => user_id,
-             :link_id => link_id,
-             :value => value
-  end
-
 end
