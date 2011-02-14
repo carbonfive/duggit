@@ -9,10 +9,6 @@ class Vote
   validates :value, :inclusion => [-1, 1]
   validate :not_link_submitter, :if => :link
 
-  def self.for_link(link)
-    $cassandra.get(:votes, link.id.to_s).collect { |c| Vote.from_cassandra(link.id, c) }
-  end
-
   def self.count_for_link(link)
     $cassandra.get(:votes, link.id.to_s).reduce(0) do |count, (_user_id, value)|
       count += value.to_i
@@ -61,14 +57,6 @@ class Vote
     if link_submitter
       errors[:user_id] << "You cannot vote for your own links" 
     end
-  end
-
-  def self.from_cassandra(link_id, c)
-    user_id = c[0].to_i
-    value = c[1].to_i
-    Vote.new :user_id => user_id,
-             :link_id => link_id,
-             :value => value
   end
 
 end
