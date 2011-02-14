@@ -9,12 +9,6 @@ class Vote
   validates :value, :inclusion => [-1, 1]
   validate :not_link_submitter, :if => :link
 
-  def self.count_for_link(link)
-    $cassandra.get(:votes, link.id.to_s).reduce(0) do |count, (_user_id, value)|
-      count += value.to_i
-    end
-  end
-
   def initialize(args = {})
     @user_id = args[:user_id]
     @link_id = args[:link_id]

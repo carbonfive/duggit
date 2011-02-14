@@ -16,7 +16,9 @@ class Link < ActiveRecord::Base
   end
 
   def value
-    Vote.count_for_link self
+    $cassandra.get(:votes, id.to_s).reduce(0) do |count, (_user_id, value)|
+      count += value.to_i
+    end
   end
 
 end
