@@ -18,6 +18,7 @@ Feature: Vote on a link
      When I go to the home page
       And I vote up "Link 1"
      Then I should be on the home page
+      And I should not see "Unable to tally your vote"
       And I should see "1" as the value for "Link 1"
       And I should be able to down-vote "Link 1"
 
