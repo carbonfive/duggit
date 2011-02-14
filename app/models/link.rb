@@ -34,10 +34,15 @@ class Link < ActiveRecord::Base
 
   def add_to_timeline
     value = { SimpleUUID::UUID.new => id.to_s }
+<<<<<<< HEAD
     $cassandra.batch do
       $cassandra.insert :user_links, user.id.to_s, value
       $cassandra.insert :user_links, 'all', value
     end
+=======
+    $cassandra.insert :user_links, user.id.to_s, value
+    $cassandra.insert :user_links, 'all', value
+>>>>>>> Update Link to store link in timeline.
   end
 
 end
