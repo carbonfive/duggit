@@ -6,9 +6,12 @@ class Link < ActiveRecord::Base
   validates :title, :presence => true
   validates :url, :presence => true
 
+  after_create :add_to_timeline
+
   def self.recent(args)
-    order('created_at DESC').
-      limit(args[:limit])
+    options = { :reversed => true, :count => args[:limit] }
+    ids = $cassandra.get(:user_links, 'all', options).collect { |_, id| id.to_i }
+    where(:id => ids).order("created_at DESC")
   end
 
   def self.by_title(title)
@@ -21,6 +24,14 @@ class Link < ActiveRecord::Base
     $cassandra.get(:votes, id.to_s).reduce(0) do |count, (_, value)|
       count += value.to_i
     end
+  end
+
+  private
+
+  def add_to_timeline
+    value = { SimpleUUID::UUID.new => id.to_s }
+    $cassandra.insert :user_links, user.id.to_s, value
+    $cassandra.insert :user_links, 'all', value
   end
 
 end
