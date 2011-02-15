@@ -16,6 +16,8 @@ class Link < ActiveRecord::Base
   end
 
   def value
+    return 0 unless id
+
     $cassandra.get(:votes, id.to_s).reduce(0) do |count, (_, value)|
       count += value.to_i
     end
