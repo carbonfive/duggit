@@ -5,22 +5,16 @@ describe LinksController do
   describe '#new' do
     context 'when logged in' do
       before do
-        @link = stub 'link'
-
-        Link.
-          stubs(:new).
-          with().
-          returns(@link)
-
         user = Factory :user
         login user
 
         get :new
+        @link = assigns :link
       end
 
       it 'creates a new link' do
-        Link.should have_received(:new).with()
-        assigns(:link).should == @link
+        @link.should be
+        @link.value.should == 0
       end
 
       it 'displays the new link page' do
@@ -42,27 +36,19 @@ describe LinksController do
   describe '#create' do
     context 'when logged in' do
       before do
-        @params = {}
-        @link = stub 'link'
-        @link.
-          stubs(:save).
-          with()
-
-        Link.
-          stubs(:new).
-          with(@params).
-          returns(@link)
-
         user = Factory :user
         login user
 
         post :create, 
-          :link => @params
+          :link => { :title => 'Carbon Five', :url => 'http://www.carbonfive.com' }
+
+        @link = Link.recent(:limit => 1)[0]
       end
 
       it 'creates a new link' do
-        Link.should have_received(:new).with(@params)
-        @link.should have_received(:save).with()
+        @link.should be
+        @link.title.should == 'Carbon Five'
+        @link.url.should == 'http://www.carbonfive.com'
       end
 
       it 'sets a flash message' do
@@ -87,19 +73,21 @@ describe LinksController do
 
   describe '#index' do
     before do
-      @links = stub 'recent links'
-      @limit = 30
-      Link.
-        stubs(:recent).
-        with(:limit => @limit).
-        returns(@links)
+      user = Factory :user
+
+      5.times do |i|
+        link = Link.new :user_id => user.id, :title => "#{i}", :url => ""
+        link.save!
+      end
 
       get :index
+
+      @links = assigns :links
     end
 
     it 'finds recent links' do
-      Link.should have_received(:recent).with(:limit => @limit)
-      assigns(:links).should == @links
+      @links.should be
+      @links.should have(5).links
     end
 
     it 'displays the homepage' do
