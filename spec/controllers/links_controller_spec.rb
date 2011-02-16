@@ -76,7 +76,7 @@ describe LinksController do
       user = Factory :user
 
       5.times do |i|
-        link = Link.new :user_id => user.id, :title => "#{i}", :url => ""
+        link = Link.new :user_id => user.id, :title => "#{i}", :url => "http://foo.com/#{i}"
         link.save!
       end
 
