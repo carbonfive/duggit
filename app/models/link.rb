@@ -14,6 +14,10 @@ class Link
     where(:id => ids)
   end
 
+  def self.by_title(title)
+    where :title => title
+  end
+
   def self.find(id)
     from_cassandra( $cassandra.get :links, id )
   end
@@ -36,10 +40,6 @@ class Link
 
   def user=(user)
     @user_id = user ? user.id : nil
-  end
-
-  def self.by_title(title)
-    where :title => title
   end
 
   def value
