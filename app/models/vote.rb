@@ -12,7 +12,7 @@ class Vote < ActiveRecord::Base
  protected
 
   def not_link_submitter
-    link_submitter = user_id == link.user.id
+    link_submitter = user_id == link.user_id
     if link_submitter
       errors[:user_id] << "You cannot vote for your own links" 
     end
