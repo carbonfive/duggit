@@ -10,9 +10,9 @@ class Vote
   validate :not_link_submitter, :if => :link
 
   def initialize(args = {})
-    @user_id = args[:user_id]
-    @link_id = args[:link_id]
-    @value = args[:value]
+    @user_id = args[:user_id] || args['user_id']
+    @link_id = args[:link_id] || args['link_id']
+    @value   = args[:value]   || args['value']
   end
 
   def user
