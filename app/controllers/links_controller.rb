@@ -8,7 +8,7 @@ class LinksController < ApplicationController
   end
 
   def create
-    link = current_user.links.new params[:link]
+    link = Link.new({ :user_id => current_user.id }.merge(params[:link]))
     link.save
     flash[:notice] = 'Thanks for your link!'
     redirect_to root_path

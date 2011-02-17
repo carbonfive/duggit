@@ -42,7 +42,7 @@ class Vote
   def save
     return false unless valid?
 
-    $cassandra.insert :votes, @link_id.to_s, { @user_id.to_s => @value.to_s }
+    $cassandra.insert :votes, @link_id, { @user_id.to_s => @value.to_s }
     true
   end
 

@@ -1,17 +1,41 @@
-class Link < ActiveRecord::Base
+class Link
 
-  belongs_to :user
+  include ActiveModel::Validations
+
+  attr_accessor :id, :user_id, :title, :url, :created_at
 
   validates :user_id, :presence => true
   validates :title, :presence => true
   validates :url, :presence => true
 
-  after_create :add_to_timeline
-
   def self.recent(args)
     options = { :reversed => true, :count => args[:limit] }
-    ids = $cassandra.get(:user_links, 'all', options).collect { |_, id| id.to_i }
-    where(:id => ids).order("created_at DESC")
+    ids = $cassandra.get(:user_links, 'all', options).values
+    where(:id => ids)
+  end
+
+  def self.find(id)
+    from_cassandra( $cassandra.get :links, id )
+  end
+
+  def self.where(args)
+    from_cassandra( $cassandra.multi_get(:links, args[:id]).values )
+  end
+
+  def initialize(args = {})
+    @user_id    = args[:user_id]    || args['user_id']
+    @title      = args[:title]      || args['title']
+    @url        = args[:url]        || args['url']
+    @created_at = args[:created_at] || args['created_at'] || Time.new
+  end
+
+  def user
+    return nil unless @user_id
+    User.find @user_id
+  end
+
+  def user=(user)
+    @user_id = user ? user.id : nil
   end
 
   def self.by_title(title)
@@ -26,14 +50,38 @@ class Link < ActiveRecord::Base
     end
   end
 
+  def save
+    return false unless valid?
+
+    uuid = SimpleUUID::UUID.new
+    @id = uuid.to_guid
+    value = { 'user_id' => @user_id.to_s, 'title' => @title, 'url' => @url, 'created_at' => @created_at.to_f.to_s }
+    pointer = { uuid => @id }
+
+    $cassandra.batch do
+      $cassandra.insert :links, @id, value
+      $cassandra.insert :user_links, @user_id.to_s, pointer
+      $cassandra.insert :user_links, 'all', pointer
+    end
+
+    true
+  end
+
+  def save!
+    raise ActiveRecord::RecordInvalid.new(self) unless save
+  end
+
   private
 
-  def add_to_timeline
-    value = { SimpleUUID::UUID.new => id.to_s }
-    $cassandra.batch do
-      $cassandra.insert :user_links, user.id.to_s, value
-      $cassandra.insert :user_links, 'all', value
+  def self.from_cassandra(c)
+    if c.is_a? Array
+      return c.collect { |item| from_cassandra(item) }
     end
+
+    Link.new :user_id => c['user_id'].to_i,
+             :title => c['title'],
+             :url => c['url'],
+             :created_at => Time.at(c['created_at'].to_f)
   end
 
 end

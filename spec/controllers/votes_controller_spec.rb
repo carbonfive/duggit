@@ -15,7 +15,6 @@ describe VotesController do
             :link_id => link.id,
             :vote => {:value => 1}
 
-          link.reload
           @diff = link.value - old_total
         end
 
@@ -39,7 +38,6 @@ describe VotesController do
             :link_id => link.id,
             :vote => {:value => 10}
 
-          link.reload
           @diff = link.value - old_total
         end
 
