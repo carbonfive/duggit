@@ -29,14 +29,19 @@ describe Link do
 
   describe '.by_title' do
     before do
-      Factory(:link, :title => 'foo')
+      2.times do
+        Factory :link, :title => 'foo'
+      end
+      Factory :link, :title => 'bar'
+
       @links = Link.by_title 'foo'
     end
 
     it 'finds the link' do
       @links.should be
-      @links.should have(1).item
+      @links.should have(2).items
       @links[0].title.should == 'foo'
+      @links[1].title.should == 'foo'
     end
   end
 
