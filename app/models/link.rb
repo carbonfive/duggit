@@ -12,6 +12,10 @@ class Link < ActiveRecord::Base
       limit(args[:limit])
   end
 
+  def self.by_title(title)
+    where :title => title
+  end
+
   def value
     votes.sum :value
   end
