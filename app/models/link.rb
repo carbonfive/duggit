@@ -11,19 +11,17 @@ class Link
   def self.recent(args)
     options = { :reversed => true, :count => args[:limit] }
     ids = $cassandra.get(:user_links, 'all', options).values
-    where(:id => ids)
+    from_cassandra( $cassandra.multi_get(:links, ids).values )
   end
 
   def self.by_title(title)
-    where :title => title
+    index_expr = $cassandra.create_idx_expr 'title', title, '=='
+    index_clause = $cassandra.create_idx_clause [index_expr]
+    from_cassandra( $cassandra.get_indexed_slices(:links, index_clause) )
   end
 
   def self.find(id)
     from_cassandra( $cassandra.get :links, id )
-  end
-
-  def self.where(args)
-    from_cassandra( $cassandra.multi_get(:links, args[:id]).values )
   end
 
   def initialize(args = {})
@@ -76,6 +74,19 @@ class Link
   def self.from_cassandra(c)
     if c.is_a? Array
       return c.collect { |item| from_cassandra(item) }
+    end
+
+    if c.is_a? CassandraThrift::KeySlice
+      link = Link.new
+      c.columns.each do |col_or_super|
+        col = col_or_super.column
+        link.user_id = col.value.to_i if col.name == 'user_id'
+        link.title = col.value if col.name == 'title'
+        link.url = col.value if col.name == 'url'
+        link.created_at = Time.at(col.value.to_f) if col.name = 'created_at'
+      end
+      
+      return link
     end
 
     Link.new :user_id => c['user_id'].to_i,
