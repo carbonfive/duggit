@@ -8,3 +8,7 @@ create column family votes with comparator = 'BytesType';
 
 Lab 4:
 create column family user_links with comparator = 'TimeUUIDType';
+
+Lab 5:
+create column family links with comparator = 'AsciiType';
+update column family links with column_metadata = [ { column_name:title, validation_class: UTF8Type, index_type:KEYS } ];
