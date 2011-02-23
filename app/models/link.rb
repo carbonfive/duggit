@@ -11,8 +11,7 @@ class Link
 
   def self.recent(args)
     options = { :reversed => true, :count => args[:limit] }
-    ids = $cassandra.get(:user_links, 'all', options).values
-    from_cassandra( $cassandra.multi_get(:links, ids).values )
+    from_cassandra( $cassandra.get(:user_super_links, 'all', options).values )
   end
 
   def self.by_title(title)
@@ -62,12 +61,12 @@ class Link
     @id = uuid.to_guid
     value = { 'id' => @id, 'user_id' => @user_id.to_s, 'title' => @title,
               'url' => @url, 'created_at' => @created_at.to_f.to_s }
-    pointer = { uuid => @id }
+    pointer = { uuid => value }
 
     $cassandra.batch do
       $cassandra.insert :links, @id, value
-      $cassandra.insert :user_links, @user_id.to_s, pointer
-      $cassandra.insert :user_links, 'all', pointer
+      $cassandra.insert :user_super_links, @user_id.to_s, pointer
+      $cassandra.insert :user_super_links, 'all', pointer
     end
 
     true
