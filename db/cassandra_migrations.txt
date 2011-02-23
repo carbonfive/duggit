@@ -2,3 +2,6 @@ Lab 2:
 create keyspace duggit_development;
 create keyspace duggit_test;
 use duggit_test;
+
+Lab 3:
+create column family votes with comparator = 'BytesType';
