@@ -5,3 +5,6 @@ use duggit_test;
 
 Lab 3:
 create column family votes with comparator = 'BytesType';
+
+Lab 4:
+create column family user_links with comparator = 'TimeUUIDType';
