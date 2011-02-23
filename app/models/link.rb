@@ -1,6 +1,7 @@
 class Link
 
   include ActiveModel::Validations
+  include ActiveModel::Conversion
 
   attr_accessor :id, :user_id, :title, :url, :created_at
 
@@ -20,11 +21,17 @@ class Link
     from_cassandra( $cassandra.get_indexed_slices(:links, index_clause) )
   end
 
+  def self.find_by_title!(title)
+    links = self.by_title title
+    links.empty? ? nil : links[0]
+  end
+
   def self.find(id)
     from_cassandra( $cassandra.get :links, id )
   end
 
   def initialize(args = {})
+    @id         = args[:id]         || args['id']
     @user_id    = args[:user_id]    || args['user_id']
     @title      = args[:title]      || args['title']
     @url        = args[:url]        || args['url']
@@ -53,7 +60,8 @@ class Link
 
     uuid = SimpleUUID::UUID.new
     @id = uuid.to_guid
-    value = { 'user_id' => @user_id.to_s, 'title' => @title, 'url' => @url, 'created_at' => @created_at.to_f.to_s }
+    value = { 'id' => @id, 'user_id' => @user_id.to_s, 'title' => @title,
+              'url' => @url, 'created_at' => @created_at.to_f.to_s }
     pointer = { uuid => @id }
 
     $cassandra.batch do
@@ -69,6 +77,10 @@ class Link
     raise ActiveRecord::RecordInvalid.new(self) unless save
   end
 
+  def persisted?
+    ! @id.nil?
+  end
+
   private
 
   def self.from_cassandra(c)
@@ -80,6 +92,7 @@ class Link
       link = Link.new
       c.columns.each do |col_or_super|
         col = col_or_super.column
+        link.id = col.value if col.name == 'id'
         link.user_id = col.value.to_i if col.name == 'user_id'
         link.title = col.value if col.name == 'title'
         link.url = col.value if col.name == 'url'
@@ -89,7 +102,8 @@ class Link
       return link
     end
 
-    Link.new :user_id => c['user_id'].to_i,
+    Link.new :id => c['id'],
+             :user_id => c['user_id'].to_i,
              :title => c['title'],
              :url => c['url'],
              :created_at => Time.at(c['created_at'].to_f)
