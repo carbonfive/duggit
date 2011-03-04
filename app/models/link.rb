@@ -96,7 +96,7 @@ class Link
         link.user_id = col.value.to_i if col.name == 'user_id'
         link.title = col.value if col.name == 'title'
         link.url = col.value if col.name == 'url'
-        link.created_at = Time.at(col.value.to_f) if col.name = 'created_at'
+        link.created_at = Time.at(col.value.to_f) if col.name == 'created_at'
       end
       
       return link
