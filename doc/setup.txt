@@ -1,0 +1,30 @@
+Before starting
+---------------
+
+- Must have Ruby and MySQL installed
+-- Ideally MySQL has root/<nopass> access
+
+- Install git
+-- OS X: http://code.google.com/p/git-osx-installer/
+-- (Make sure to put it in your PATH)
+
+- Fork and Clone repository
+-- fork on github
+-- git clone git@github.com:<your username>/duggit.git
+
+- Download gems (you may need sudo access for this)
+-- gem install bundler
+-- bundle install
+
+- Download Cassandra
+-- http://cassandra.apache.org/
+-- http://apache.mirrors.tds.net/cassandra/0.7.2/apache-cassandra-0.7.2-bin.tar.gz
+
+
+
+First run
+---------
+
+$ rake db:create:all
+$ rake db:migrate
+$ rake
