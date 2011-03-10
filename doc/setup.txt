@@ -1,8 +1,7 @@
 Before starting
 ---------------
 
-- Must have Ruby and MySQL installed
--- Ideally MySQL has root/<nopass> access
+- Must have Ruby installed
 
 - Install git
 -- OS X: http://code.google.com/p/git-osx-installer/
@@ -16,10 +15,24 @@ Before starting
 -- gem install bundler
 -- bundle install
 
+- ***** OR *****
+-- gem install --local ../downloads/bundler-1.0.10.gem
+-- bundle install --local
+
 - Download Cassandra
 -- http://cassandra.apache.org/
 -- http://apache.mirrors.tds.net/cassandra/0.7.2/apache-cassandra-0.7.2-bin.tar.gz
 
+
+Ubuntu specifics
+
+# nokogiri requirements
+sudo apt-get install libxslt-dev libxml2-dev
+
+# sqlite3 requirements
+sudo apt-get install libsqlite3-dev
+
+sudo apt-get install rake
 
 
 First run
